@@ -4,9 +4,10 @@
 
 ### Fixed
 - Write a number with a fractional part as an `xsd:double` in `toRDF`, as
-  JSON-LD 1.1 API Object to RDF Conversion step 10 does, also when it has no
-  decimal point. A number such as `1e-7` was written as the `xsd:integer`
-  `0`, and a `NaN` number as the `xsd:integer` `NaN`.
+  JSON-LD 1.1 API Object to RDF Conversion step 10 does. A number that
+  JavaScript writes without a decimal point, such as `1e-7`, however the JSON
+  spells it, was written as the `xsd:integer` `0` or `-0`, and a `NaN` number
+  as the `xsd:integer` `NaN`.
   - **NOTE**: This changes the output of `toRDF` and `canonize` for these
     values, and so any hash or signature computed from it.
 

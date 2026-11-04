@@ -159,11 +159,17 @@ describe('other toRDF tests', () => {
     });
   });
 
-  it('should write numbers with a fraction as doubles', async () => {
+  it('should write numbers with a fraction, and NaN, as doubles', async () => {
     const XSD = 'http://www.w3.org/2001/XMLSchema#';
     const cases = [
       [JSON.parse('1e-7'), `"1.0E-7"^^<${XSD}double>`],
+      [JSON.parse('0.0000001'), `"1.0E-7"^^<${XSD}double>`],
       [JSON.parse('-1e-7'), `"-1.0E-7"^^<${XSD}double>`],
+      [JSON.parse('5e-324'), `"4.940656458412465E-324"^^<${XSD}double>`],
+      [
+        {'@value': JSON.parse('1e-7'), '@type': 'https://example.com/t'},
+        '"1.0E-7"^^<https://example.com/t>'
+      ],
       [NaN, `"NaN"^^<${XSD}double>`],
       [JSON.parse('2.5'), `"2.5E0"^^<${XSD}double>`],
       [JSON.parse('1e21'), `"1.0E21"^^<${XSD}double>`],
