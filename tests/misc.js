@@ -151,18 +151,22 @@ describe('other toRDF tests', () => {
       [{'@value': 'INF', '@type': XSD_DOUBLE}, 'INF'],
       [{'@value': '+INF', '@type': XSD_DOUBLE}, 'INF'],
       [{'@value': '-INF', '@type': XSD_DOUBLE}, '-INF'],
-      [{'@value': 'NaN', '@type': XSD_DOUBLE}, 'NaN']
+      [{'@value': ' INF ', '@type': XSD_DOUBLE}, 'INF'],
+      [{'@value': 'NaN', '@type': XSD_DOUBLE}, 'NaN'],
+      [{'@value': '-0', '@type': XSD_DOUBLE}, '-0.0E0'],
+      [{'@value': JSON.parse('-0'), '@type': XSD_DOUBLE}, '-0.0E0'],
+      [{'@value': '0', '@type': XSD_DOUBLE}, '0.0E0']
     ];
-    for(const [value, lexical] of cases) {
-      const output = await jsonld.toRDF({
+    const output = [];
+    for(const [value] of cases) {
+      output.push(await jsonld.toRDF({
         '@id': 'https://example.com/s',
         'https://example.com/p': value
-      }, {format: 'application/n-quads'});
-      assert.equal(
-        output,
-        '<https://example.com/s> <https://example.com/p> ' +
-        `"${lexical}"^^<${XSD_DOUBLE}> .\n`);
+      }, {format: 'application/n-quads'}));
     }
+    assert.deepStrictEqual(output, cases.map(([, lexical]) =>
+      '<https://example.com/s> <https://example.com/p> ' +
+      `"${lexical}"^^<${XSD_DOUBLE}> .\n`));
   });
 
   it('should fail for deprecated N-Quads format', done => {
