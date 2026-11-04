@@ -1,5 +1,14 @@
 # jsonld ChangeLog
 
+## 9.0.1 - xxxx-xx-xx
+
+### Fixed
+- Write the special `xsd:double` values as `INF`, `-INF` and `NaN`, their XML
+  Schema canonical forms, in `toRDF`. A number too large for a double was
+  written as `Infinity`, which is not a valid `xsd:double`, and the typed
+  strings `INF`, `+INF` and `-INF` were read with `parseFloat()` and written
+  as `NaN`.
+
 ## 9.0.0 - 2025-11-20
 
 ### Added
